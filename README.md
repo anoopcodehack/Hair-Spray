@@ -1,4 +1,4 @@
-# 💇‍♀️ Hairspray — Salon & Spa
+#  Hairspray — Salon & Spa
 
 > **Style. Care. Relax. Repeat.**
 
@@ -8,7 +8,7 @@ From a precision haircut and styling session to a relaxing massage or rejuvenati
 
 ---
 
-## ✨ About Hairspray
+##  About Hairspray
 
 **Hairspray** is more than just a hair salon.
 
@@ -16,20 +16,20 @@ It combines professional **hair styling, grooming, skincare, spa treatments, and
 
 The platform is designed to help customers:
 
-- 💇‍♂️ Explore haircuts and styling services
-- ✂️ Discover professional hair-care treatments
-- 🧖‍♀️ Book face spa and skincare treatments
-- 💆‍♂️ Explore massage and relaxation services
-- 💅 Discover additional beauty and grooming services
-- 📅 Schedule appointments easily
-- 📋 View available services and pricing
-- 📱 Access the salon experience through a modern, responsive interface
+-  Explore haircuts and styling services
+-  Discover professional hair-care treatments
+-  Book face spa and skincare treatments
+-  Explore massage and relaxation services
+-  Discover additional beauty and grooming services
+-  Schedule appointments easily
+-  View available services and pricing
+-  Access the salon experience through a modern, responsive interface
 
 ---
 
-## 💎 Services
+##  Services
 
-### 💇 Hair & Styling
+###  Hair & Styling
 
 Professional hair services tailored to different styles and preferences.
 
@@ -42,7 +42,7 @@ Professional hair services tailored to different styles and preferences.
 - Blow-dry & styling
 - Grooming services
 
-### 🧖 Face & Skin Care
+###  Face & Skin Care
 
 Refresh and rejuvenate your skin with dedicated facial and skincare treatments.
 
@@ -53,7 +53,7 @@ Refresh and rejuvenate your skin with dedicated facial and skincare treatments.
 - Relaxation facials
 - Grooming treatments
 
-### 💆 Spa & Massage
+###  Spa & Massage
 
 A dedicated space to relax, recover, and unwind.
 
@@ -63,7 +63,7 @@ A dedicated space to relax, recover, and unwind.
 - Spa treatments
 - Stress-relief treatments
 
-### ✨ Beauty & Grooming
+###  Beauty & Grooming
 
 Complete your look with additional personal-care services.
 
@@ -74,7 +74,7 @@ Complete your look with additional personal-care services.
 
 ---
 
-## 🌟 Why Hairspray?
+##  Why Hairspray?
 
 Hairspray focuses on creating a **complete salon and wellness experience** instead of treating every service separately.
 
