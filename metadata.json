@@ -1,0 +1,6 @@
+{
+  "name": "Hair Spraay Unisex Salon",
+  "description": "Premium unisex salon in Kavoor, Mangalore offering luxury hair care, bridal packages, skin facials, styling, and glassmorphic online booking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
