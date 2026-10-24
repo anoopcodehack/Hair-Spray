@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, MapPin, Calendar, Star, Phone, Instagram, MessageCircle, Scissors } from 'lucide-react';
 import { useBooking } from '../context/BookingContext';
@@ -6,6 +6,7 @@ import { SALON_INFO, hair1 } from '../data/salonData';
 
 export const Hero: React.FC = () => {
   const { openBooking } = useBooking();
+  const liveStatus = useMemo(() => getSalonCurrentStatus(), []);
 
   return (
     <section
@@ -133,19 +134,35 @@ export const Hero: React.FC = () => {
                 Signature <strong>Keratin & Cysteine Bond Repair</strong> — visible transformation without damage or compromise, tailored precisely to your hair texture.
               </p>
 
-              {/* High-Contrast Obsidian Pill Button */}
-              <motion.button
-                id="hero-main-cta-btn"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={() => openBooking()}
-                className="group inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-zinc-900 hover:bg-black text-white text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all shadow-lg shadow-zinc-900/15 cursor-pointer"
-              >
-                <span>Book VIP Appointment</span>
-                <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
-                  <ArrowUpRight className="w-3.5 h-3.5 text-white" />
-                </span>
-              </motion.button>
+              {/* Primary Actions & Google Rating Social Proof */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <motion.button
+                  id="hero-main-cta-btn"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => openBooking()}
+                  className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-zinc-900 hover:bg-black text-white text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all shadow-lg shadow-zinc-900/15 cursor-pointer"
+                >
+                  <span>Book VIP Appointment</span>
+                  <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                    <ArrowUpRight className="w-3.5 h-3.5 text-white" />
+                  </span>
+                </motion.button>
+
+                <a
+                  href={SALON_INFO.justdialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2.5 px-4 py-3 sm:py-3.5 rounded-full bg-white/95 backdrop-blur-md border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-xs font-semibold shadow-xs hover:shadow-sm transition-all"
+                >
+                  <div className="flex items-center gap-0.5 text-amber-500">
+                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  </div>
+                  <span className="text-zinc-950 font-bold">4.7 / 5.0</span>
+                  <span className="text-zinc-500 font-normal">· 301 Reviews</span>
+                  <ArrowUpRight className="w-3 h-3 text-zinc-400" />
+                </a>
+              </div>
             </motion.div>
 
             {/* Right Editorial Headline & Salon Status Badge */}
@@ -177,9 +194,23 @@ export const Hero: React.FC = () => {
           {/* Bottom Floating Feature Card (Bottom-Right Positioned) */}
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6 pt-4">
             {/* Left Micro Summary */}
-            <div className="hidden md:flex items-center gap-3 text-xs text-zinc-600 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-              <span>Kavoor Junction · Airport Road · Open Today 9:00 AM – 8:00 PM</span>
+            <div className="hidden md:flex items-center gap-2.5 text-xs text-zinc-600 font-medium">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  liveStatus.isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-400'
+                }`}
+              />
+              <span className="font-semibold text-zinc-900">
+                {liveStatus.isOpen ? 'Open Now' : 'Currently Closed'}
+              </span>
+              <span className="text-zinc-400">·</span>
+              <span>
+                {liveStatus.isOpen
+                  ? `Closes today at ${liveStatus.closeHourStr}`
+                  : `Opens at ${liveStatus.openHourStr}`}
+              </span>
+              <span className="text-zinc-400">·</span>
+              <span>Kavoor Junction, Airport Rd</span>
             </div>
 
             {/* Right Floating Frosted Glass Card */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, CheckCircle2, ThumbsUp, Plus, X } from 'lucide-react';
+import { Star, CheckCircle2, ThumbsUp, Plus, X, ArrowUpRight } from 'lucide-react';
 import { REVIEWS_LIST, SALON_INFO, SERVICES_LIST } from '../data/salonData';
 import { ReviewItem } from '../types';
 
@@ -142,6 +142,16 @@ export const ReviewsSection: React.FC = () => {
               <Plus className="w-4 h-4" />
               <span>Write a Review</span>
             </motion.button>
+            <a
+              href={SALON_INFO.justdialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full mt-2.5 py-3 rounded-full bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-700 hover:text-zinc-950 text-xs font-sans font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs"
+            >
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              <span>Review on Google / Justdial</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+            </a>
           </motion.div>
 
           {/* Detailed Star Distribution Bars */}

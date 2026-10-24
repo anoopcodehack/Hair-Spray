@@ -1,4 +1,4 @@
-import { ServiceItem, Stylist, ReviewItem, FAQItem, GalleryItem, MembershipPlan, DayTiming } from '../types';
+import { ServiceItem, Stylist, ReviewItem, FAQItem, GalleryItem, MembershipPlan, DayTiming, SalonCombo } from '../types';
 import ashwalImage from '../assets/images/ashwal.jpg';
 import abhishekImage from '../assets/images/abhishek.jpg';
 import vedaImage from '../assets/images/veda.jpg';
@@ -85,6 +85,44 @@ export const SALON_TIMINGS: DayTiming[] = [
   { day: 'Saturday', dayShort: 'Sat', open: '09:00', close: '20:00' },
   { day: 'Sunday', dayShort: 'Sun', open: '09:00', close: '20:00' }
 ];
+
+
+export function getSalonCurrentStatus(): {
+  isOpen: boolean;
+  todayName: string;
+  openHourStr: string;
+  closeHourStr: string;
+  statusLabel: string;
+} {
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const istDate = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + istOffset);
+  const dayIndex = istDate.getDay();
+  const hour = istDate.getHours();
+  const minute = istDate.getMinutes();
+  const timeNum = hour + minute / 60;
+
+  const dayMap = [6, 0, 1, 2, 3, 4, 5];
+  const todayTimingIndex = dayMap[dayIndex];
+  const todayTiming = SALON_TIMINGS[todayTimingIndex];
+
+  const openHour = todayTiming.day === 'Tuesday' ? 10 : 9;
+  const closeHour = 20;
+
+  const isOpen = timeNum >= openHour && timeNum < closeHour;
+  const openHourStr = todayTiming.day === 'Tuesday' ? '10:00 AM' : '9:00 AM';
+  const closeHourStr = '8:00 PM';
+
+  return {
+    isOpen,
+    todayName: todayTiming.day,
+    openHourStr,
+    closeHourStr,
+    statusLabel: isOpen
+      ? `Open Now · Closes at ${closeHourStr}`
+      : `Closed · Opens at ${openHourStr}`
+  };
+}
 
 export { SERVICES_LIST } from './servicesData';
 
@@ -626,4 +664,73 @@ export const TIME_SLOTS = [
   '05:30 PM',
   '06:30 PM',
   '07:00 PM'
+];
+
+export const SALON_COMBOS: SalonCombo[] = [
+  {
+    id: 'combo-men-essentials',
+    name: 'Men’s Grooming Essentials',
+    target: 'Men',
+    tagline: 'Complete head-to-neck refresh with precision hair cut and clean beard contouring.',
+    price: 649,
+    originalPrice: 850,
+    savings: 201,
+    durationMin: 45,
+    popular: true,
+    inclusions: [
+      'Precision Cut tailored to face shape',
+      'Beard Sculpting & Razor Neck Line',
+      'Invigorating Scalp Shampoo & Conditioning',
+      'De-Tan Organic Face Pack & Cooling Mist'
+    ]
+  },
+  {
+    id: 'combo-humidity-defense',
+    name: 'Coastal Humidity Defense Ritual',
+    target: 'Unisex',
+    tagline: 'Our signature zero-frizz cysteine therapy engineered for Mangalore’s coastal humidity.',
+    price: 2599,
+    originalPrice: 3200,
+    savings: 601,
+    durationMin: 120,
+    popular: true,
+    inclusions: [
+      'Formaldehyde-Free Cysteine Bond Infusion',
+      'Intense Deep Conditioning Moisture Rinse',
+      'Thermal Shield Protection Blowdry',
+      'Mirror Gloss Argan Finishing Touch'
+    ]
+  },
+  {
+    id: 'combo-bridal-radiance',
+    name: 'Bridal Radiance & Glow Ritual',
+    target: 'Women',
+    tagline: 'Comprehensive pre-wedding aesthetic indulgence for brides and bridesmaids.',
+    price: 3499,
+    originalPrice: 4500,
+    savings: 1001,
+    durationMin: 150,
+    inclusions: [
+      'O3+ Professional Skin Brightening Facial',
+      'Full Arms & Legs Rica Waxing',
+      'Deluxe Rose Spa Pedicure & Manicure',
+      'Full Face Threading & Anti-Tan Clarifying Pack'
+    ]
+  },
+  {
+    id: 'combo-detox-spa',
+    name: 'Rejuvenating Detoxing Spa Session',
+    target: 'Unisex',
+    tagline: 'Melt everyday fatigue with natural herbal hair therapy and gentle fish reflexology.',
+    price: 999,
+    originalPrice: 1400,
+    savings: 401,
+    durationMin: 60,
+    inclusions: [
+      'Nourishing Herbal Hair Spa Cream Bath',
+      'Relaxing Acupressure Scalp & Neck Massage',
+      'Signature 20-Minute Fish Spa Pedicure',
+      'Hydrating Steam & Gloss Blowout'
+    ]
+  }
 ];

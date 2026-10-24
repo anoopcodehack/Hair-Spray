@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Eye, X, ChevronLeft, ChevronRight, ArrowLeftRight, ArrowUpRight } from 'lucide-react';
-import { GALLERY_ITEMS } from '../data/salonData';
+import { Eye, X, ChevronLeft, ChevronRight, ArrowLeftRight, ArrowUpRight, MessageCircle, Check } from 'lucide-react';
+import { GALLERY_ITEMS, hair7, SALON_INFO } from '../data/salonData';
 import { GalleryItem } from '../types';
 
 export const GallerySection: React.FC = () => {
@@ -94,28 +94,34 @@ export const GallerySection: React.FC = () => {
           className="mb-14 max-w-4xl mx-auto"
         >
           <div className="p-6 sm:p-8 rounded-[28px] bg-[#FAFAFA] border border-zinc-200 hover:border-zinc-300 transition-colors shadow-xs">
-            <div className="flex items-center justify-between mb-5 font-sans">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 font-sans">
               <div className="flex items-center gap-3">
-                <span className="p-2 rounded-xl bg-zinc-100 border border-zinc-200 text-[#9E6868] shadow-2xs">
+                <span className="p-2.5 rounded-xl bg-zinc-100 border border-zinc-200 text-[#9E6868] shadow-2xs">
                   <ArrowLeftRight className="w-4 h-4" />
                 </span>
                 <div>
-                  <h3 className="text-base font-serif font-bold text-zinc-950">
-                    Keratin Cysteine Restorative Therapy
-                  </h3>
-                  <p className="text-xs text-zinc-500 font-sans">
-                    Drag the center handle horizontally to observe real outcome
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-serif font-bold text-zinc-950">
+                      Keratin Cysteine Restorative Therapy
+                    </h3>
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-sans">
+                      Real Client Result
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-500 font-sans mt-0.5">
+                    Drag slider horizontally to compare coastal humidity frizz vs mirror gloss
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-sans">
-                Zero Frizz Guaranteed
-              </span>
+              <div className="flex items-center gap-2 text-xs font-semibold text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-full shadow-2xs self-start sm:self-auto">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Zero Frizz Guaranteed</span>
+              </div>
             </div>
 
             {/* Slider Container */}
             <div
-              className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden select-none cursor-ew-resize group shadow-inner border border-zinc-200"
+              className="relative aspect-[4/3] sm:aspect-[16/10] rounded-2xl overflow-hidden select-none cursor-ew-resize group shadow-inner border border-zinc-200 bg-zinc-900"
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
@@ -128,41 +134,96 @@ export const GallerySection: React.FC = () => {
                 setSliderPosition((x / rect.width) * 100);
               }}
             >
-              {/* After Image (Full width background) */}
-              <img
-                src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=1200&auto=format&fit=crop&q=80"
-                alt="After Treatment - Silky Smooth Mirror Shine"
-                className="absolute inset-0 w-full h-full object-cover filter brightness-95"
-              />
-              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white font-sans text-xs font-semibold">
-                After (Keratin Cysteine)
+              {/* Layer 1: After Image (Glossy Blowout) */}
+              <div className="absolute inset-0 overflow-hidden">
+                <img
+                  src={hair7}
+                  alt="After Keratin Cysteine - Silky Mirror Gloss Finish"
+                  className="absolute top-0 -left-[100%] w-[200%] h-full object-cover object-right pointer-events-none select-none max-w-none"
+                />
+                <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/20 text-white font-sans text-xs font-semibold shadow-sm">
+                  After: Cysteine Mirror Gloss
+                </div>
               </div>
 
-              {/* Before Image (Clipped by slider position) */}
+              {/* Layer 2: Before Image (Frizzy Texture, clipped by sliderPosition) */}
               <div
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${sliderPosition}%` }}
+                className="absolute inset-0 overflow-hidden pointer-events-none"
+                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=1200&auto=format&fit=crop&q=80"
-                  alt="Before Treatment - Frizzy Damaged Hair"
-                  className="absolute inset-0 w-full h-full object-cover max-w-none filter brightness-90"
-                  style={{ width: '100%', height: '100%' }}
+                  src={hair7}
+                  alt="Before Keratin Cysteine - Frizzy Damaged Texture"
+                  className="absolute top-0 left-0 w-[200%] h-full object-cover object-left pointer-events-none select-none max-w-none"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white font-sans text-xs font-semibold">
-                  Before (Frizzy Texture)
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/20 text-white font-sans text-xs font-semibold shadow-sm">
+                  Before: Coastal Humidity Frizz
                 </div>
               </div>
 
               {/* Center Divider Handle */}
               <div
-                className="absolute top-0 bottom-0 w-[2px] bg-white shadow-2xl z-30"
+                className="absolute top-0 bottom-0 w-[2px] bg-white shadow-2xl z-20 pointer-events-none"
                 style={{ left: `${sliderPosition}%` }}
               >
                 <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white text-zinc-900 shadow-xl flex items-center justify-center border border-zinc-300">
-                  <ArrowLeftRight className="w-3.5 h-3.5" />
+                  <ArrowLeftRight className="w-3.5 h-3.5 text-zinc-700" />
                 </div>
               </div>
+            </div>
+
+            {/* Case Study Details Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-5 border-t border-zinc-200">
+              <div className="p-3 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block">
+                  Hair Profile
+                </span>
+                <span className="text-xs font-semibold text-zinc-900 mt-0.5 block">
+                  Dense Frizzy Waves
+                </span>
+              </div>
+              <div className="p-3 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block">
+                  Treatment
+                </span>
+                <span className="text-xs font-semibold text-zinc-900 mt-0.5 block">
+                  Cysteine Bond Infusion
+                </span>
+              </div>
+              <div className="p-3 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block">
+                  Service Time
+                </span>
+                <span className="text-xs font-semibold text-zinc-900 mt-0.5 block">
+                  120 Minutes
+                </span>
+              </div>
+              <div className="p-3 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block">
+                  Retention
+                </span>
+                <span className="text-xs font-semibold text-zinc-900 mt-0.5 block">
+                  3 – 5 Months
+                </span>
+              </div>
+            </div>
+
+            {/* Direct Booking Call-To-Action */}
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 pt-3">
+              <p className="text-xs text-zinc-500 font-sans">
+                Complimentary strand analysis included with every Keratin Cysteine consultation.
+              </p>
+              <a
+                href={`https://wa.me/${SALON_INFO.phoneClean}?text=${encodeURIComponent(
+                  'Hi Hair Spray! I saw the Keratin Cysteine before/after transformation on your website and would like to book a consultation at your Kavoor salon.'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold tracking-wide transition-colors shadow-2xs whitespace-nowrap self-stretch sm:self-auto cursor-pointer"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Book This Treatment via WhatsApp</span>
+              </a>
             </div>
           </div>
         </motion.div>

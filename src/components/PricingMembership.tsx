@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
-import { Check, Award, Star, ArrowUpRight, Scissors, User, Layers, ChevronDown, ChevronUp } from 'lucide-react';
-import { MEMBERSHIP_PLANS, SERVICES_LIST } from '../data/salonData';
+import { Check, Award, Star, ArrowUpRight, Scissors, User, Layers, ChevronDown, ChevronUp, MessageCircle, Clock } from 'lucide-react';
+import { MEMBERSHIP_PLANS, SERVICES_LIST, SALON_COMBOS, SALON_INFO } from '../data/salonData';
 import { ServiceCategory } from '../types';
 import { useBooking } from '../context/BookingContext';
 import { AudienceFilter, isServiceForAudience, getAudienceBadge } from '../utils/serviceAudience';
@@ -11,7 +11,7 @@ const BATCH_SIZE = 6;
 
 export const PricingMembership: React.FC = () => {
   const { openBooking } = useBooking();
-  const [activeTab, setActiveTab] = useState<'single' | 'membership'>('membership');
+  const [activeTab, setActiveTab] = useState<'combos' | 'membership' | 'single'>('combos');
   const [audience, setAudience] = useState<AudienceFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory>('All');
   const [visibleCount, setVisibleCount] = useState(INITIAL_SINGLE_ITEMS);
@@ -96,9 +96,20 @@ export const PricingMembership: React.FC = () => {
         <div className="flex justify-center mb-14">
           <div className="inline-flex p-1 rounded-full bg-zinc-200/70 border border-zinc-300 shadow-inner">
             <button
+              id="pricing-tab-combos"
+              onClick={() => setActiveTab('combos')}
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer ${
+                activeTab === 'combos'
+                  ? 'bg-white text-zinc-950 font-semibold shadow-xs scale-102'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              Trending Combos
+            </button>
+            <button
               id="pricing-tab-membership"
               onClick={() => setActiveTab('membership')}
-              className={`px-6 py-2.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer ${
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer ${
                 activeTab === 'membership'
                   ? 'bg-white text-zinc-950 font-semibold shadow-xs scale-102'
                   : 'text-zinc-600 hover:text-zinc-900'
@@ -109,7 +120,7 @@ export const PricingMembership: React.FC = () => {
             <button
               id="pricing-tab-single"
               onClick={() => setActiveTab('single')}
-              className={`px-6 py-2.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer ${
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer ${
                 activeTab === 'single'
                   ? 'bg-white text-zinc-950 font-semibold shadow-xs scale-102'
                   : 'text-zinc-600 hover:text-zinc-900'
@@ -119,6 +130,117 @@ export const PricingMembership: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Tab 0: Trending Salon Combos */}
+        {activeTab === 'combos' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
+            {SALON_COMBOS.map((combo, idx) => {
+              const isPopular = combo.popular;
+              return (
+                <motion.div
+                  key={combo.id}
+                  initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  whileHover={{ y: -6, transition: { duration: 0.25, ease: 'easeOut' } }}
+                  transition={{ duration: 0.45, delay: idx * 0.08 }}
+                  className={`rounded-[28px] p-6 sm:p-8 flex flex-col justify-between relative transition-all duration-300 bg-white border ${
+                    isPopular
+                      ? 'border-zinc-900 shadow-xl'
+                      : 'border-zinc-200 hover:border-zinc-400 shadow-xs hover:shadow-lg'
+                  }`}
+                >
+                  <div>
+                    {/* Top Badges */}
+                    <div className="flex items-center justify-between gap-2 mb-4 font-sans">
+                      <div className="flex items-center gap-2">
+                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+                          combo.target === 'Men'
+                            ? 'bg-sky-50 text-sky-800 border-sky-200'
+                            : combo.target === 'Women'
+                            ? 'bg-rose-50 text-rose-800 border-rose-200'
+                            : 'bg-zinc-100 text-zinc-800 border-zinc-200'
+                        }`}>
+                          {combo.target} Package
+                        </span>
+                        {isPopular && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-zinc-900 text-white font-sans">
+                            Most Booked
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                        Save ₹{combo.savings}
+                      </span>
+                    </div>
+
+                    {/* Title & Tagline */}
+                    <h3 className="text-2xl font-serif font-bold text-zinc-950 mb-1">
+                      {combo.name}
+                    </h3>
+                    <p className="text-xs text-zinc-500 font-sans leading-relaxed mb-6">
+                      {combo.tagline}
+                    </p>
+
+                    {/* Pricing Block */}
+                    <div className="mb-6 pb-5 border-b border-zinc-100 flex items-baseline justify-between">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl sm:text-4xl font-serif font-bold text-zinc-950">
+                          ₹{combo.price.toLocaleString()}
+                        </span>
+                        <span className="text-sm text-zinc-400 line-through font-sans">
+                          ₹{combo.originalPrice.toLocaleString()}
+                        </span>
+                      </div>
+                      <span className="text-xs text-zinc-500 font-sans flex items-center gap-1 font-medium">
+                        <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                        ~{combo.durationMin} mins
+                      </span>
+                    </div>
+
+                    {/* Inclusions List */}
+                    <div className="space-y-2.5 mb-8">
+                      <p className="text-[10px] uppercase font-sans tracking-wider text-zinc-400 font-bold">
+                        Package Inclusions:
+                      </p>
+                      {combo.inclusions.map((item, iIdx) => (
+                        <div key={iIdx} className="flex items-start gap-2.5 text-xs text-zinc-700">
+                          <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                          <span className="leading-snug">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Actions: Book Modal + WhatsApp Direct */}
+                  <div className="flex items-center gap-2 pt-2">
+                    <motion.button
+                      id={`book-combo-${combo.id}`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => openBooking(null, null)}
+                      className="flex-1 py-3 px-4 rounded-full bg-zinc-900 hover:bg-black text-white text-xs font-sans uppercase tracking-wider font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                    >
+                      <span>Book Combo</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </motion.button>
+                    <a
+                      href={`https://wa.me/${SALON_INFO.phoneClean}?text=${encodeURIComponent(
+                        `Hi Hair Spray! I would like to book the "${combo.name}" combo package (₹${combo.price}) at your Kavoor salon.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-3 px-4 rounded-full border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-sans font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="hidden sm:inline">WhatsApp</span>
+                    </a>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Tab 1: VIP Membership Plans */}
         {activeTab === 'membership' && (

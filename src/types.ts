@@ -123,3 +123,16 @@ export interface BookingConfirmation {
   totalPrice: number;
   createdAt: string;
 }
+
+export interface SalonCombo {
+  id: string;
+  name: string;
+  target: 'Men' | 'Women' | 'Unisex';
+  tagline: string;
+  price: number;
+  originalPrice: number;
+  savings: number;
+  durationMin: number;
+  popular?: boolean;
+  inclusions: string[];
+}
