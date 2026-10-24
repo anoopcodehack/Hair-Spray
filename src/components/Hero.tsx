@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, MapPin, Calendar, Star, Phone, Instagram, MessageCircle, Scissors } from 'lucide-react';
 import { useBooking } from '../context/BookingContext';
-import { SALON_INFO, hair1 } from '../data/salonData';
+import { SALON_INFO, hair1, getSalonCurrentStatus } from '../data/salonData';
 
 export const Hero: React.FC = () => {
   const { openBooking } = useBooking();
